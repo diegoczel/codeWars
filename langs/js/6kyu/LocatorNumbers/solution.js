@@ -1,5 +1,7 @@
 function toLocString(num){
   if(!num) return ''; // null, undefined or empty (0 is empty)
+
+  // string must be sorted by a-z and A-Z
 }
 
 function toInt(str){
@@ -37,10 +39,14 @@ function position(letter) {
   // if letter is invalid
 }
 
+/*const l = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
+console.log(l.map(position).reduce((total, current) => total + 2 ** current, 0 ));*/
+
+/*
 console.log(toInt('-\t\tli\\nux\v\v1\r\r\n\n  ')); // char invalid
 console.log(toInt('linux'));
 console.log(toInt('-\t\tAbCd\v\v1\r\r\n\n  '))
-/*console.log(toInt('-')); // only '-' into str
+console.log(toInt('-')); // only '-' into str
 console.log(toInt('-abc---')); // del all '-'
 console.log(position('*'));
 console.log(position('Z'));*/
