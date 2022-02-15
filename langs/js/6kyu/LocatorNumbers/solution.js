@@ -1,7 +1,28 @@
 function toLocString(num){
   if(!num) return ''; // null, undefined or empty (0 is empty)
 
-  // string must be sorted by a-z and A-Z
+  // string must be sorted by a-z and A-Z, and non repeting letters
+
+  
+  /*
+  const arr = [];
+  for(let i of new Set(string)) arr.push(i);
+  */
+  // vai ter que ser uma comb entre digamos 'actA', como é ordenado e unico
+  // String.fromCharCode(range)
+
+  const range = [];
+  console.log(num % 2 === 1);
+  // start with problem
+  let start = num % 2 === 1 ? 98 : 97; // if number is odd, then contains 'a'
+  let end = 122;
+  for(let i = start; i <= end; i++) range.push(String.fromCharCode(i));
+  console.log(start);
+  start = 65;
+  end = 90;
+  for(let i = start; i <= end; i++) range.push(String.fromCharCode(i));
+  console.log(start);
+  console.log(range);
 }
 
 function toInt(str){
@@ -38,6 +59,8 @@ function position(letter) {
   if(l <= 90 && l >= 65) return l - upperStart + 26;
   // if letter is invalid
 }
+
+toLocString(9447680);
 
 /*const l = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
 console.log(l.map(position).reduce((total, current) => total + 2 ** current, 0 ));*/
