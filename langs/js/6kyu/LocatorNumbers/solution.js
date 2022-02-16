@@ -1,28 +1,53 @@
 function toLocString(num){
-  if(!num) return ''; // null, undefined or empty (0 is empty)
+  // !num         when null, undefined or empty (0 is empty) 
+  // isNaN(num)   when num is not a number
+  // num === 0    when num is equal 0, then is ''
+  if(!num || isNaN(num) || num === 0) return '';
+
+  let isNegative = false;
+  if(num < 0) {
+    isNegative = true;
+    num = num * -1;
+  }
 
   // string must be sorted by a-z and A-Z, and non repeting letters
 
-  
-  /*
-  const arr = [];
-  for(let i of new Set(string)) arr.push(i);
-  */
-  // vai ter que ser uma comb entre digamos 'actA', como é ordenado e unico
-  // String.fromCharCode(range)
-
   const range = [];
-  console.log(num % 2 === 1);
-  // start with problem
-  let start = num % 2 === 1 ? 98 : 97; // if number is odd, then contains 'a'
+  let start = num % 2 === 1 ? 97 : 98; // if number is odd, then contains 'a'
   let end = 122;
   for(let i = start; i <= end; i++) range.push(String.fromCharCode(i));
-  console.log(start);
   start = 65;
   end = 90;
   for(let i = start; i <= end; i++) range.push(String.fromCharCode(i));
-  console.log(start);
-  console.log(range);
+
+  // make an array with combination of letter's
+  let comb = [];
+  for(let i = 0; i < range.length - 1; i++) {
+    let s = toInt(range[i]);
+    console.log(range[i], 'i', s);
+    comb.push(range[i]);
+    for(let j = i + 1; j < range.length; j++) {
+      if(s === num) {
+        console.log('comb interna', comb);
+        return comb.join('');
+
+      }
+      if(s > num) {
+        console.log('comb break', comb);
+        comb = [];
+        s = 0;
+        continue;
+      }
+      s += toInt(range[j]);
+      console.log(range[j], 'j', s);
+      comb.push(range[j]);
+      
+    }
+    console.log('\n\n');
+    s = 0;
+    console.log('comb', comb);
+    comb = [];
+  }
 }
 
 function toInt(str){
@@ -60,7 +85,9 @@ function position(letter) {
   // if letter is invalid
 }
 
-toLocString(9447680);
+//2251799813685248
+console.log(toLocString(9447680));
+//console.log(toLocString(7));
 
 /*const l = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
 console.log(l.map(position).reduce((total, current) => total + 2 ** current, 0 ));*/
