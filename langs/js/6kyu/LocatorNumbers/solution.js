@@ -21,7 +21,20 @@ function toLocString(num){
   for(let i = start; i <= end; i++) range.push(String.fromCharCode(i));
 
   // make an array with combination of letter's
-  let comb = [];
+  const group = [];
+  const comb = [];
+  let sumGroup = 0;
+  let sumComb = 0;
+  for(let i = 0; i < range.length - 1; i++) {
+    group.push(range[i]);
+    sumGroup += toInt(range[i]);
+
+    for(let j = i + 1; j < range.length; j++) {
+
+    }
+
+  }
+  /*let comb = [];
   for(let i = 0; i < range.length - 1; i++) {
     let s = toInt(range[i]);
     console.log(range[i], 'i', s);
@@ -47,7 +60,7 @@ function toLocString(num){
     s = 0;
     console.log('comb', comb);
     comb = [];
-  }
+  }*/
 }
 
 function toInt(str){
@@ -86,8 +99,15 @@ function position(letter) {
 }
 
 //2251799813685248
-console.log(toLocString(9447680));
+//console.log(toLocString(9447680));
 //console.log(toLocString(7));
+console.log(9447680);
+console.log(toInt('i'));
+console.log(toInt('l'));
+console.log(toInt('n'));
+console.log(toInt('u'));
+console.log(toInt('x'));
+
 
 /*const l = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
 console.log(l.map(position).reduce((total, current) => total + 2 ** current, 0 ));*/
