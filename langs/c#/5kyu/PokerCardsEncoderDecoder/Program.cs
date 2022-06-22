@@ -3,6 +3,13 @@ TestEncode(new string[] {"Td", "8c", "Ks"});
 TestEncode(new string[] {"Qh", "5h", "Ad"});
 TestEncode(new string[] {"8c", "Ks", "Td"});
 TestEncode(new string[] {"Qh", "Ad", "5h"});
+Console.WriteLine();
+
+TestDecode(new int[] {});
+TestDecode(new int[] {7, 22, 51});
+TestDecode(new int[] {13, 30, 37});
+TestDecode(new int[] {7, 51, 22});
+TestDecode(new int[] {13, 37, 30});
 
 static int[] Encode(string[] cards) 
 {
@@ -23,7 +30,40 @@ static string[] Decode(int[] cards)
 {
     string[] result = new string[cards.Length];
 
+    for(int ind = 0; ind < cards.Length; ind++)
+        result[ind] = GetCard(cards[ind]);
+
+    /* Sort
+    https://www.c-sharpcorner.com/article/sort-array-list-of-objects-in-c-sharp-comparable-and-comperator/
+    https://docs.microsoft.com/en-us/troubleshoot/developer/visualstudio/csharp/language-compilers/use-icomparable-icomparer
+    IComparer
+    */
+
     return result;
+}
+
+static char GetSuit(int number)
+{
+    if(number < 13) return 'c';
+    if(number < 26) return 'd';
+    if(number < 39) return 'h';
+    return 's'; // default s
+}
+static string GetCard(int number)
+{
+    int position = number % 13;
+    string card = position switch
+    {
+        0 => "A",
+        9 => "T",
+        10 => "J",
+        11 => "Q",
+        12 => "K",
+        _ => (position + 1).ToString()
+    };
+
+    card += GetSuit(number).ToString();
+    return card;
 }
 
 static int GetSuitNumber(char suit)
@@ -51,4 +91,21 @@ static void TestEncode(string[] cards)
     for(int ind = 0; ind < cardsEncode.Length; ind++)
         Console.Write($"{cardsEncode[ind]} | ");
     Console.WriteLine();
+}
+
+static void TestDecode(int[] cards)
+{
+    string[] cardsDecode = Decode(cards);
+
+    for(int ind = 0; ind < cardsDecode.Length; ind++)
+        Console.Write($"{cardsDecode[ind]} | ");
+    Console.WriteLine();
+}
+
+class SortCardString : IComparer
+{
+    int Compare(string cardCurrent, string cardAnother)
+    {
+        return 0;
+    }
 }
