@@ -13,6 +13,40 @@ Table(new []
     "-:- TSG 1899 Hoffenheim - RasenBall Leipzig"
 });
 
+Table(new []
+{
+    "1:2 FC Bayern Muenchen - Werder Bremen",
+    "2:2 Eintracht Frankfurt - Schalke 04",
+    "3:4 FC Augsburg - VfL Wolfsburg",
+    "3:0 Hamburger SV - FC Ingolstadt",
+    "0:4 1. FC Koeln - SV Darmstadt",
+    "4:0 Borussia Dortmund - FSV Mainz 05",
+    "5:3 Borussia Moenchengladbach - Bayer Leverkusen",
+    "2:1 Hertha BSC Berlin - SC Freiburg",
+    "2:2 TSG 1899 Hoffenheim - RasenBall Leipzig"
+});
+/*
+Expected:
+ 1. Borussia Dortmund             1  1  0  0  4:0  3
+ 1. SV Darmstadt                  1  1  0  0  4:0  3
+ 3. Hamburger SV                  1  1  0  0  3:0  3
+ 4. Borussia Moenchengladbach     1  1  0  0  5:3  3
+ 5. VfL Wolfsburg                 1  1  0  0  4:3  3
+ 6. Hertha BSC Berlin             1  1  0  0  2:1  3
+ 6. Werder Bremen                 1  1  0  0  2:1  3
+ 8. Eintracht Frankfurt           1  0  1  0  2:2  1
+ 8. RasenBall Leipzig             1  0  1  0  2:2  1
+ 8. Schalke 04                    1  0  1  0  2:2  1
+ 8. TSG 1899 Hoffenheim           1  0  1  0  2:2  1
+12. FC Augsburg                   1  0  0  1  3:4  0
+13. FC Bayern Muenchen            1  0  0  1  1:2  0
+13. SC Freiburg                   1  0  0  1  1:2  0
+15. Bayer Leverkusen              1  0  0  1  3:5  0
+16. FC Ingolstadt                 1  0  0  1  0:3  0
+17. 1. FC Koeln                   1  0  0  1  0:4  0
+17. FSV Mainz 05                  1  0  0  1  0:4  0
+*/
+
 static string Table(string[] results)
 {
     var d = new Dictionary<string, Team>();
@@ -67,11 +101,21 @@ static string Table(string[] results)
 
     var r = new StringBuilder();
 
-    for(int i = 0; i < teams.Count - 1; i++)
+    int pos = 1;
+    r.Append($"{(pos).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[0])}\n");
+
+    for(int i = 1; i < teams.Count - 1; i++)
     {
-        r.Append($"{(i + 1).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[i])}\n");
+        if(!teams[i - 1].TeamAtSamePosition(teams[i]))
+        {
+            pos = i + 1;
+        }
+        r.Append($"{(pos).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[i])}\n");
     }
-    r.Append($"{(teams.Count).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[teams.Count - 1])}");
+    if(teams[^1].TeamAtSamePosition(teams[^2]))
+        r.Append($"{(pos).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[^1])}");
+    else
+        r.Append($"{(teams.Count).ToString().PadLeft(2, ' ')}. {FormatTeamInfo(teams[^1])}");
     
     Console.WriteLine(r.ToString());
     return r.ToString();
@@ -142,5 +186,13 @@ public class Team : IComparable<Team>
         }
 
         return r;
+    }
+
+    public bool TeamAtSamePosition(Team other)
+    {
+        return 
+            this.Points == other.Points 
+            && (this.GoalsShot - this.goalsGotten) == (other.GoalsShot - other.goalsGotten)
+            && this.GoalsShot == other.GoalsShot;
     }
 }
